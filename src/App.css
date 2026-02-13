@@ -1,42 +1,437 @@
-#root {
-  max-width: 1280px;
+/* App Layout */
+.app {
+  max-width: 480px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.loading-screen,
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #FFD43B, #FF6B6B, #9775FA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.settings-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.2s;
+}
+.settings-btn:hover { color: #FFD43B; }
+
+/* Wheel Section */
+.wheel-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0;
 }
 
-.card {
-  padding: 2em;
+/* Spin Button */
+.spin-button {
+  margin-top: 16px;
+  padding: 16px 48px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #FF6B6B, #FF922B);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: pulse 2s infinite;
 }
 
-.read-the-docs {
+.spin-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(255, 107, 107, 0.6);
+}
+
+.spin-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  animation: none;
+}
+
+.spin-button.spinning {
+  animation: none;
+  opacity: 0.7;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* Filter Controls */
+.filter-controls {
+  margin: 16px 0;
+}
+
+.filter-section {
+  margin-bottom: 12px;
+}
+
+.filter-label {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.radius-slider {
+  width: 100%;
+  accent-color: #FFD43B;
+}
+
+/* Cuisine Chips */
+.cuisine-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chip-active {
+  background: #FFD43B;
+  border-color: #FFD43B;
+  color: #1a1a2e;
+}
+
+.chip-inactive {
+  background: transparent;
+  border-color: #555;
   color: #888;
+}
+
+.chip-inactive:hover {
+  border-color: #FFD43B;
+  color: #FFD43B;
+}
+
+/* Excluded Tags */
+.excluded-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.excluded-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid #FF6B6B;
+  border-radius: 14px;
+  font-size: 12px;
+  color: #FF6B6B;
+}
+
+.tag-remove {
+  background: none;
+  border: none;
+  color: #FF6B6B;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+/* Restaurant List */
+.restaurant-list {
+  margin-top: 16px;
+}
+
+.list-toggle {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #f0f0f0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow { transition: transform 0.2s; }
+.arrow-up { transform: rotate(180deg); }
+
+.restaurant-items {
+  list-style: none;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.restaurant-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.restaurant-item.excluded { opacity: 0.4; }
+.restaurant-item.closed { opacity: 0.6; }
+
+.restaurant-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.restaurant-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.restaurant-meta {
+  color: #888;
+  font-size: 12px;
+}
+
+.restaurant-status {
+  font-size: 11px;
+  font-weight: 700;
+}
+.restaurant-status.open { color: #69DB7C; }
+.restaurant-status.closed { color: #FF6B6B; }
+
+/* Result Card Overlay */
+.result-card-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s;
+}
+
+.result-card {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 2px solid #FFD43B;
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp 0.4s ease-out;
+}
+
+.result-card h2 {
+  font-size: 24px;
+  color: #FFD43B;
+  margin-bottom: 4px;
+}
+
+.result-cuisine {
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.result-details {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.result-rating { color: #FFD43B; }
+.result-price { color: #69DB7C; }
+.result-distance { color: #4DABF7; }
+
+.result-status {
+  margin-bottom: 16px;
+}
+
+.status-open {
+  color: #69DB7C;
+  font-weight: 700;
+}
+.status-closed {
+  color: #FF6B6B;
+  font-weight: 700;
+}
+
+.result-hours {
+  display: block;
+  color: #888;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* Buttons */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: transform 0.1s;
+}
+.btn:hover { transform: scale(1.02); }
+
+.btn-directions {
+  background: #4DABF7;
+  color: #fff;
+}
+
+.btn-spin-again {
+  background: linear-gradient(135deg, #FF6B6B, #FF922B);
+  color: #fff;
+}
+
+.btn-exclude {
+  background: transparent;
+  border: 1px solid #FF6B6B;
+  color: #FF6B6B;
+}
+
+.btn-refresh {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.btn-refresh:hover { background: rgba(255, 255, 255, 0.12); }
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f0f0f0;
+  width: 100%;
+}
+
+.btn-danger {
+  background: rgba(255, 107, 107, 0.2);
+  color: #FF6B6B;
+  width: 100%;
+}
+
+.btn-close {
+  background: transparent;
+  color: #888;
+  width: 100%;
+}
+
+/* Settings Panel */
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.settings-panel {
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 24px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-panel h3 {
+  text-align: center;
+  color: #FFD43B;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* Utility */
+.loading-text {
+  text-align: center;
+  color: #888;
+  padding: 8px;
+}
+
+.error-text {
+  text-align: center;
+  color: #FF6B6B;
+  padding: 8px;
+}
+
+.wheel-cap-warning {
+  text-align: center;
+  color: #FFA94D;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
