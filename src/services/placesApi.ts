@@ -1,20 +1,6 @@
 import type { Restaurant, CuisineType } from "../types";
 import { PLACES_TYPE_TO_CUISINE, MILES_TO_METERS } from "../utils/constants";
 
-const API_KEY = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
-const NEARBY_SEARCH_URL = "https://places.googleapis.com/v1/places:searchNearby";
-
-const FIELD_MASK = [
-  "places.id",
-  "places.displayName",
-  "places.types",
-  "places.location",
-  "places.rating",
-  "places.priceLevel",
-  "places.currentOpeningHours",
-  "places.businessStatus",
-].join(",");
-
 interface PlacesResponse {
   places?: Array<{
     id: string;
@@ -61,13 +47,9 @@ function getTodayHours(weekdayDescriptions?: string[]): string | null {
 export async function fetchNearbyRestaurants(
   latitude: number, longitude: number, radiusMiles: number
 ): Promise<Restaurant[]> {
-  const response = await fetch(NEARBY_SEARCH_URL, {
+  const response = await fetch("/api/places/nearby", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Goog-Api-Key": API_KEY,
-      "X-Goog-FieldMask": FIELD_MASK,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       includedTypes: ["restaurant"],
       maxResultCount: 20,
